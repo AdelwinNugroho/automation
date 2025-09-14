@@ -5,6 +5,7 @@ import re
 import os
 import sys # Digunakan untuk keluar dari skrip
 import logging # Modul untuk debugging
+import time # Untuk jeda antara perintah
 
 # Mengaktifkan debug logging untuk Netmiko
 logging.basicConfig(filename="netmiko.log", level=logging.DEBUG)
@@ -84,25 +85,22 @@ def run_automation():
 
             # 2. Dari jumphost pertama, jalankan perintah SSH ke jumphost kedua (Telkom)
             print(f"[*] Menghubungkan ke jumphost kedua ({JUMPHOST_2['host']})...")
-            jump2_connect_session = jump1_connect.send_command_expect(
+            # Menggunakan send_command_expect untuk otentikasi
+            output = jump1_connect.send_command_expect(
                 f"ssh {JUMPHOST_2['username']}@{JUMPHOST_2['host']}",
-                expect_string=r"Password:"
+                expect_string=r"password:"
             )
-            jump2_connect_session += jump1_connect.send_command_expect(JUMPHOST_2['password'], expect_string=r"~$")
+            output += jump1_connect.send_command_expect(JUMPHOST_2['password'], expect_string=r">")
             
             print(f"[*] Berhasil terhubung ke jumphost kedua ({JUMPHOST_2['host']}).")
 
-            # 3. Dari jumphost kedua, jalankan perintah SSH ke perangkat target (Node Telkor)
+            # 3. Dari jumphost kedua, jalankan perintah SSH ke perangkat Cisco target
             print(f"[*] Menghubungkan ke perangkat target ({host})...")
-            net_connect_session = jump1_connect.send_command_expect(
+            output = jump1_connect.send_command_expect(
                 f"ssh {device['username']}@{device['host']}",
                 expect_string=r"Password:"
             )
-            net_connect_session += jump1_connect.send_command_expect(device['password'], expect_string=r">")
-            
-            # Masuk ke privilege mode
-            net_connect_session += jump1_connect.send_command_expect("enable", expect_string=r"Password:")
-            net_connect_session += jump1_connect.send_command_expect(device['secret'], expect_string=r"#")
+            output += jump1_connect.send_command_expect(device['password'], expect_string=r"#")
             
             print(f"[*] Berhasil terhubung ke perangkat {host}.")
 
