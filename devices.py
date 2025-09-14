@@ -1,34 +1,31 @@
-# Pastikan Anda menginstal Netmiko, Python, dan library pendukung lainnya.
-# Pip install netmiko
+# Ini adalah file terpisah untuk menyimpan kredensial perangkat Anda.
+# Pastikan Anda mengisinya dengan informasi yang benar.
+
+JUMPHOST_1 = {
+    "device_type": "windows",
+    "host": "100.75.49.116",
+    "username": "user1",
+    "password": "sisindokom@sshd1",
+}
+
+JUMPHOST_2 = {
+    "device_type": "terminal",
+    "host": "10.62.170.56", 
+    "username": "930435",
+    "password": "Razor301412",
+}
 
 DEVICES = [
     {
         "device_type": "cisco_xr",
-        "host": "",
+        "host": "R3.STA.PE-MOBILE.1",  # Ganti dengan IP atau hostname perangkat
         "username": "930435",
-        "password": "12345Qwer"
+        "password": "12345Qwer",
     },
     {
         "device_type": "cisco_xr",
-        "host": "",
-        "username": "",
-        "password": ""
+        "host": "R3.STA.PE-MOBILE.2",
+        "username": "930435",
+        "password": "12345Qwer"
     },
-    # Tambahkan perangkat Cisco lainnya di sini
 ]
-
-# Konfigurasi untuk Jumphost SSI
-JUMPHOST_1 = {
-    "device_type": "windows",
-    "host": "",
-    "username": "",
-    "password": ""
-}
-
-# Konfigurasi untuk Jumphost Telkom
-JUMPHOST_2 = {
-    "device_type": "terminal",
-    "host": "",
-    "username": "",
-    "password": ""
-}
